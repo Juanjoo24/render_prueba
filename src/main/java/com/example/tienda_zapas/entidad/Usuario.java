@@ -8,7 +8,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; 
+    private Integer id; // <--- CAMBIO CLAVE: De 'int' a 'Integer' para evitar el Error 400
     
     private String nombre;
     private String apellido; 
@@ -27,13 +27,12 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    // Getters y Setters
-    
-    public int getId() {
+    // Getters y Setters actualizados a Integer
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
