@@ -18,19 +18,15 @@ public class UsuarioControlador {
 
     @GetMapping("/register")
     public String mostrarFormulario(Model model) {
-        if (!model.containsAttribute("usuario")) {
-            model.addAttribute("usuario", new Usuario());
+        // Usamos "usuarioForm" para que no choque con el campo "usuario" de la entidad
+        if (!model.containsAttribute("usuarioForm")) {
+            model.addAttribute("usuarioForm", new Usuario());
         }
         return "html/register"; 
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "html/login"; 
-    }
-
     @PostMapping("/usuarios/registrar")
-    public String guardarUsuario(@ModelAttribute("usuario") Usuario usuario, BindingResult result, Model model) {
+    public String guardarUsuario(@ModelAttribute("usuarioForm") Usuario usuario, BindingResult result, Model model) {
         
         if (result.hasErrors()) {
             System.out.println(">>> ERROR DE VALIDACIÓN: " + result.getAllErrors());
@@ -39,15 +35,18 @@ public class UsuarioControlador {
 
         try {
             usuarioRepositorio.save(usuario);
-            
             model.addAttribute("nombreUsuario", usuario.getUsuario());
-            
             return "html/bienvenida"; 
             
         } catch (Exception e) {
-            System.out.println(">>> ERROR AL GUARDAR: " + e.getMessage());
+            System.out.println(">>> ERROR AL GUARDAR EN BD: " + e.getMessage());
             model.addAttribute("error", "El nombre de usuario o email ya existe.");
             return "html/register";
         }
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "html/login"; 
     }
 }
