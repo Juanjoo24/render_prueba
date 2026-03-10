@@ -27,8 +27,17 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/usuarios/registrar")
-    public String guardarUsuario(@ModelAttribute("usuario") Usuario usuario) {
-        usuarioRepositorio.save(usuario);
-        return "redirect:/login?exito";
+    public String guardarUsuario(@ModelAttribute("usuario") Usuario usuario, Model model) {
+        try {
+            usuarioRepositorio.save(usuario);
+            
+            model.addAttribute("nombreUsuario", usuario.getUsuario());
+            
+            return "html/bienvenida"; 
+            
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al registrar: el usuario ya existe o los datos son incorrectos.");
+            return "html/register";
+        }
     }
 }
